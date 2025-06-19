@@ -20,9 +20,12 @@ const KanbanBoard = () => {
     const fetchTasks = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/tasks", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/tasks",
+          {
+            headers,
+          }
+        );
         const filteredTasks =
           user.role === "admin"
             ? res.data
@@ -42,14 +45,17 @@ const KanbanBoard = () => {
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
       await axios.put(
-        `http://localhost:5000/api/tasks/${taskId}`,
+        `https://task-manager-ht8a.onrender.com/api/tasks/${taskId}`,
         { status: newStatus },
         { headers }
       );
       // Refresh tasks after update
-      const res = await axios.get("http://localhost:5000/api/tasks", {
-        headers,
-      });
+      const res = await axios.get(
+        "https://task-manager-ht8a.onrender.com/api/tasks",
+        {
+          headers,
+        }
+      );
       const filteredTasks =
         user.role === "admin"
           ? res.data

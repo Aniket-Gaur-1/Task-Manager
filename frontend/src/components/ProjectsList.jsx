@@ -5,7 +5,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import ErrorModal from "./ErrorModal";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://task-manager-ht8a.onrender.com");
 
 const ProjectsList = () => {
   const { user } = useContext(AuthContext);
@@ -22,9 +22,12 @@ const ProjectsList = () => {
     const fetchProjects = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/projects", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/projects",
+          {
+            headers,
+          }
+        );
         setProjects(res.data);
         console.log("ProjectsList: Fetched projects", {
           count: res.data.length,

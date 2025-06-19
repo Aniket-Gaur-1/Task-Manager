@@ -19,7 +19,7 @@ const CreateProject = () => {
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
       const response = await axios.post(
-        "http://localhost:5000/api/projects",
+        "https://task-manager-ht8a.onrender.com/api/projects",
         formData,
         { headers }
       );

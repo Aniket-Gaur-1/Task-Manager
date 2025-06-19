@@ -27,7 +27,7 @@ const Dashboard = () => {
             try {
               const headers = { Authorization: `Bearer ${token}` };
               const res = await axios.get(
-                "http://localhost:5000/api/auth/verify",
+                "https://task-manager-ht8a.onrender.com/api/auth/verify",
                 { headers }
               );
               // Rely on AuthContext to set user
@@ -48,9 +48,15 @@ const Dashboard = () => {
         if (user && isMounted) {
           const headers = { Authorization: `Bearer ${user.token}` };
           const [projectsRes, tasksRes, activitiesRes] = await Promise.all([
-            axios.get("http://localhost:5000/api/projects", { headers }),
-            axios.get("http://localhost:5000/api/tasks", { headers }),
-            axios.get("http://localhost:5000/api/activity", { headers }),
+            axios.get("https://task-manager-ht8a.onrender.com/api/projects", {
+              headers,
+            }),
+            axios.get("https://task-manager-ht8a.onrender.com/api/tasks", {
+              headers,
+            }),
+            axios.get("https://task-manager-ht8a.onrender.com/api/activity", {
+              headers,
+            }),
           ]);
           console.log("Projects data:", projectsRes.data); // Debug project structure
           const filteredProjects =
@@ -90,7 +96,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/logout",
+        "https://task-manager-ht8a.onrender.com/api/logout",
         {},
         { withCredentials: true }
       );

@@ -21,9 +21,12 @@ const CalenderView = () => {
     const fetchTasks = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/tasks", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/tasks",
+          {
+            headers,
+          }
+        );
         setTasks(res.data.filter((task) => task.dueDate)); // Only tasks with due dates
         console.log("CalenderView: Fetched tasks", { count: res.data.length });
       } catch (err) {

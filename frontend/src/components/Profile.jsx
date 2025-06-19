@@ -27,7 +27,7 @@ const Profile = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          `http://localhost:5000/api/users/${user.id}`,
+          `https://task-manager-ht8a.onrender.com/api/users/${user.id}`,
           { headers }
         );
         setFormData({
@@ -53,7 +53,7 @@ const Profile = () => {
       const updateData = { name: formData.name };
       if (formData.password) updateData.password = formData.password;
       const res = await axios.put(
-        `http://localhost:5000/api/users/${user.id}`,
+        `https://task-manager-ht8a.onrender.com/api/users/${user.id}`,
         updateData,
         { headers }
       );

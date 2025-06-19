@@ -32,9 +32,9 @@ const EditTask = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const [taskRes, projectsRes, usersRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/tasks/${id}`, { headers }),
-          axios.get("http://localhost:5000/api/projects", { headers }),
-          axios.get("http://localhost:5000/api/users", { headers }),
+          axios.get(`https://task-manager-ht8a.onrender.com/api/tasks/${id}`, { headers }),
+          axios.get("https://task-manager-ht8a.onrender.com/api/projects", { headers }),
+          axios.get("https://task-manager-ht8a.onrender.com/api/users", { headers }),
         ]);
         const task = taskRes.data;
         console.log("EditTask: Fetched task", task);
@@ -78,7 +78,7 @@ const EditTask = () => {
       };
       console.log("EditTask: Submitting task update", taskData);
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/${id}`,
+        `https://task-manager-ht8a.onrender.com/api/tasks/${id}`,
         taskData,
         { headers }
       );

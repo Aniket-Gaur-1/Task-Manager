@@ -23,7 +23,7 @@ const EditProject = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          `http://localhost:5000/api/projects/${id}`,
+          `https://task-manager-ht8a.onrender.com/api/projects/${id}`,
           { headers }
         );
         setFormData({
@@ -45,9 +45,13 @@ const EditProject = () => {
     setSuccess("");
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
-      await axios.put(`http://localhost:5000/api/projects/${id}`, formData, {
-        headers,
-      });
+      await axios.put(
+        `https://task-manager-ht8a.onrender.com/api/projects/${id}`,
+        formData,
+        {
+          headers,
+        }
+      );
       setSuccess("Project updated successfully");
       setTimeout(() => navigate("/projects"), 2000);
     } catch (err) {

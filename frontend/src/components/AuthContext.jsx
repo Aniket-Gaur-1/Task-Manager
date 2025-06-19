@@ -11,9 +11,12 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await fetch("http://localhost:5000/api/auth/verify", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const res = await fetch(
+            "https://task-manager-ht8a.onrender.com/api/auth/verify",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
           if (res.ok) {
             const data = await res.json();
             setUser(data.user);
@@ -32,11 +35,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://task-manager-ht8a.onrender.com/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.token);

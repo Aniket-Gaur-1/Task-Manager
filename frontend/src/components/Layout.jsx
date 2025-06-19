@@ -21,9 +21,12 @@ const Layout = () => {
     const fetchDeadlines = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/projects", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/projects",
+          {
+            headers,
+          }
+        );
         // Assuming projects have a dueDate field for simplicity
         const projectDeadlines = res.data.map((project) => ({
           name: project.name,

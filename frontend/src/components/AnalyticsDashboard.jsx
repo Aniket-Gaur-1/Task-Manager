@@ -25,8 +25,12 @@ const AnalyticsDashboard = () => {
         setLoading(true);
         const headers = { Authorization: `Bearer ${user.token}` };
         const [tasksRes, projectsRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/tasks", { headers }),
-          axios.get("http://localhost:5000/api/projects", { headers }),
+          axios.get("https://task-manager-ht8a.onrender.com/api/tasks", {
+            headers,
+          }),
+          axios.get("https://task-manager-ht8a.onrender.com/api/projects", {
+            headers,
+          }),
         ]);
         console.log("AnalyticsDashboard: Fetched data", {
           tasks: tasksRes.data.length,

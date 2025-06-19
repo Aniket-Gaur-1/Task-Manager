@@ -21,9 +21,12 @@ const AddTask = () => {
     const fetchUsers = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/users", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/users",
+          {
+            headers,
+          }
+        );
         setUsers(res.data);
       } catch (err) {
         console.error("AddTask: Fetch users error:", err.message);
@@ -46,7 +49,11 @@ const AddTask = () => {
         ...formData,
         assignedTo: formData.assignedTo || null,
       };
-      await axios.post("http://localhost:5000/api/tasks", payload, { headers });
+      await axios.post(
+        "https://task-manager-ht8a.onrender.com/api/tasks",
+        payload,
+        { headers }
+      );
       setSuccess("Task created successfully");
       setTimeout(() => navigate("/kanban"), 1000);
     } catch (err) {

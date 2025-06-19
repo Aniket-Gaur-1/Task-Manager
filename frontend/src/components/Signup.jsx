@@ -19,7 +19,10 @@ const Signup = () => {
     setError("");
     setSuccess("");
     try {
-      await axios.post("http://localhost:5000/api/register", formData);
+      await axios.post(
+        "https://task-manager-ht8a.onrender.com/api/register",
+        formData
+      );
       setSuccess("Registration successful! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {

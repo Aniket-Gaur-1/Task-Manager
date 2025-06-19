@@ -23,9 +23,12 @@ const ActivityLog = () => {
     const fetchActivities = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get("http://localhost:5000/api/activity", {
-          headers,
-        });
+        const res = await axios.get(
+          "https://task-manager-ht8a.onrender.com/api/activity",
+          {
+            headers,
+          }
+        );
         setActivities(res.data);
         console.log("ActivityLog: Fetched activities", {
           count: res.data.length,
