@@ -1,0 +1,142 @@
+.layout-container {
+    display: flex;
+    height: 100vh;
+    background: #f9f9f9;
+}
+
+.sidebar {
+    width: 250px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #e2e8f0;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: 20px;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-section {
+    margin-top: 15px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.nav-item {
+    padding: 8px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: #333;
+}
+
+.nav-item.active {
+    background: #e2e8f0;
+    border-radius: 3px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.project-info {
+    font-size: 16px;
+}
+
+.project-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.project-details {
+    color: #666;
+}
+
+.view-options {
+    display: flex;
+    gap: 10px;
+}
+
+.view-button {
+    padding: 8px 16px;
+    background: #6b46c1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.view-button.active {
+    background: #553c9a;
+}
+
+.content-area {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.error-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background: #dc3545;
+    color: #fff;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        transition: left 0.3s;
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .view-options {
+        flex-direction: column;
+        width: 100%;
+    }
+    .view-button {
+        width: 100%;
+    }
+}

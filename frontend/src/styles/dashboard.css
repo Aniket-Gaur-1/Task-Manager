@@ -1,0 +1,116 @@
+.dashboard-container {
+    padding: 20px;
+    background: #f9f9f9;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.logout-button {
+    padding: 8px 16px;
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.action-button {
+    padding: 8px 16px;
+    background: #6b46c1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.projects-section,
+.tasks-section,
+.activities-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.no-data {
+    color: #666;
+}
+
+.projects-list,
+.tasks-list,
+.activities-list {
+    list-style: none;
+    padding: 0;
+}
+
+.project-item,
+.task-item,
+.activity-item {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.project-link {
+    background: none;
+    border: none;
+    color: #6b46c1;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.task-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.task-title {
+    font-weight: bold;
+}
+
+.task-status,
+.task-project,
+.task-assignee {
+    font-size: 14px;
+    color: #666;
+}
+
+.activity-action {
+    font-size: 14px;
+}
+
+.activity-timestamp {
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column;
+    }
+    .action-button {
+        width: 100%;
+    }
+}

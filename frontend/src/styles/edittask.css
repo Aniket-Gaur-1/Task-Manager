@@ -1,0 +1,71 @@
+.edit-task-container {
+    padding: 20px;
+    background: #f9f9f9;
+    min-height: calc(100vh - 80px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.back-button {
+    padding: 8px 16px;
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.form-container {
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 20px;
+    background: #fff;
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-field,
+.textarea-field {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 3px;
+}
+
+.submit-button {
+    padding: 8px;
+    background: #6b46c1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.success-message {
+    margin-top: 10px;
+    padding: 10px;
+    background: #28a745;
+    color: #fff;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
