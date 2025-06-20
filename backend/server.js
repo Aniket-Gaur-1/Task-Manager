@@ -14,14 +14,20 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: '*', // Allow all origins for Socket.IO
+        origin: 'https://task-manager-opal-chi.vercel.app', // Allow all origins for Socket.IO
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true, // Allow credentials if needed
     },
 });
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+    cors({
+        origin: "https://task-manager-opal-chi.vercel.app", // ✅ your frontend domain
+        credentials: true, // ✅ allow cookies and auth headers
+    })
+);
+
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
