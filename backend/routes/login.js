@@ -4,7 +4,7 @@ const authenticate = require('../middleware/authenticate');
 const User = require('../models/User');
 const Activity = require('../models/Activity');
 const bcrypt = require('bcryptjs'); // Used for password hashing
-const { io } = require('../server'); // ⚠️ Circular dependency warning may appear
+const jwt = require('jsonwebtoken');
 
 // Middleware to allow only admin users
 const adminOnly = async(req, res, next) => {
