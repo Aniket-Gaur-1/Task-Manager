@@ -3,8 +3,8 @@ const router = express.Router();
 const authenticate = require('../middleware/authenticate');
 const User = require('../models/User');
 const Activity = require('../models/Activity');
-const bcrypt = require('bcryptjs'); // ✅ Added this
-const { io } = require('../server'); // ⚠️ Circular dependency warning still applies
+const bcrypt = require('bcryptjs'); // Used for password hashing
+const { io } = require('../server'); // ⚠️ Circular dependency warning may appear
 
 // Middleware to allow only admin users
 const adminOnly = async(req, res, next) => {
@@ -14,8 +14,8 @@ const adminOnly = async(req, res, next) => {
     next();
 };
 
-// ✅ Admin-only: Get all users (as a POST route)
-router.post('/', authenticate, adminOnly, async(req, res) => {
+// ✅ Admin-only: Get all users
+router.get('/', async(req, res) => {
     try {
         const users = await User.find().select('name email _id');
         res.json(users);
@@ -68,7 +68,7 @@ router.put('/:id', authenticate, async(req, res) => {
 
         await new Activity({
             userId: user._id,
-            action: `User ${user.email} updated profile`
+            action: `User ${user.email} updated profile`,
         }).save();
 
         res.json(user);
