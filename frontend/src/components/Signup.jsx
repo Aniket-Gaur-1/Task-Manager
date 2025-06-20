@@ -20,7 +20,7 @@ const Signup = () => {
     setSuccess("");
     try {
       await axios.post(
-        "https://task-manager-g1g8.onrender.com/api/register",
+        "https://task-manager-20l8.onrender.com/api/register",
         formData
       );
       setSuccess("Registration successful! Redirecting to login...");

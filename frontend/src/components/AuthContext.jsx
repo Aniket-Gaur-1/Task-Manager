@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const res = await fetch(
-            "https://task-manager-g1g8.onrender.com/api/auth/verify",
+            "https://task-manager-20l8.onrender.com/api/auth/verify",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await fetch(
-        "https://task-manager-g1g8.onrender.com/api/login",
+        "https://task-manager-20l8.onrender.com/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -5,7 +5,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import ErrorModal from "./ErrorModal";
 
-const socket = io("https://task-manager-g1g8.onrender.com");
+const socket = io("https://task-manager-20l8.onrender.com");
 
 const ProjectsList = () => {
   const { user } = useContext(AuthContext);
@@ -23,7 +23,7 @@ const ProjectsList = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          "https://task-manager-g1g8.onrender.com/api/projects",
+          "https://task-manager-20l8.onrender.com/api/projects",
           {
             headers,
           }

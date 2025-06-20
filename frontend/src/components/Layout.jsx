@@ -22,7 +22,7 @@ const Layout = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          "https://task-manager-g1g8.onrender.com/api/projects",
+          "https://task-manager-20l8.onrender.com/api/projects",
           {
             headers,
           }
