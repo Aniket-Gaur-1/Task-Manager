@@ -27,7 +27,7 @@ const Dashboard = () => {
             try {
               const headers = { Authorization: `Bearer ${token}` };
               const res = await axios.get(
-                "https://task-manager-ht8a.onrender.com/api/auth/verify",
+                "https://task-manager-g1g8.onrender.com/api/auth/verify",
                 { headers }
               );
               // Rely on AuthContext to set user
@@ -48,13 +48,13 @@ const Dashboard = () => {
         if (user && isMounted) {
           const headers = { Authorization: `Bearer ${user.token}` };
           const [projectsRes, tasksRes, activitiesRes] = await Promise.all([
-            axios.get("https://task-manager-ht8a.onrender.com/api/projects", {
+            axios.get("https://task-manager-g1g8.onrender.com/api/projects", {
               headers,
             }),
-            axios.get("https://task-manager-ht8a.onrender.com/api/tasks", {
+            axios.get("https://task-manager-g1g8.onrender.com/api/tasks", {
               headers,
             }),
-            axios.get("https://task-manager-ht8a.onrender.com/api/activity", {
+            axios.get("https://task-manager-g1g8.onrender.com/api/activity", {
               headers,
             }),
           ]);
@@ -96,7 +96,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "https://task-manager-ht8a.onrender.com/api/logout",
+        "https://task-manager-g1g8.onrender.com/api/logout",
         {},
         { withCredentials: true }
       );

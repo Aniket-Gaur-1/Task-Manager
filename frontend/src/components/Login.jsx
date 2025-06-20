@@ -16,7 +16,7 @@ const Login = () => {
     setError("");
     try {
       const res = await axios.post(
-        "https://task-manager-ht8a.onrender.com/api/login",
+        "https://task-manager-g1g8.onrender.com/api/login",
         formData,
         { withCredentials: true }
       );

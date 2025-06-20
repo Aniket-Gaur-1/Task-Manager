@@ -23,7 +23,7 @@ const EditProject = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          `https://task-manager-ht8a.onrender.com/api/projects/${id}`,
+          `https://task-manager-g1g8.onrender.com/api/projects/${id}`,
           { headers }
         );
         setFormData({
@@ -46,7 +46,7 @@ const EditProject = () => {
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
       await axios.put(
-        `https://task-manager-ht8a.onrender.com/api/projects/${id}`,
+        `https://task-manager-g1g8.onrender.com/api/projects/${id}`,
         formData,
         {
           headers,

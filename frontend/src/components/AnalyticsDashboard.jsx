@@ -25,10 +25,10 @@ const AnalyticsDashboard = () => {
         setLoading(true);
         const headers = { Authorization: `Bearer ${user.token}` };
         const [tasksRes, projectsRes] = await Promise.all([
-          axios.get("https://task-manager-ht8a.onrender.com/api/tasks", {
+          axios.get("https://task-manager-g1g8.onrender.com/api/tasks", {
             headers,
           }),
-          axios.get("https://task-manager-ht8a.onrender.com/api/projects", {
+          axios.get("https://task-manager-g1g8.onrender.com/api/projects", {
             headers,
           }),
         ]);

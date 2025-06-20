@@ -22,7 +22,7 @@ const CalenderView = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          "https://task-manager-ht8a.onrender.com/api/tasks",
+          "https://task-manager-g1g8.onrender.com/api/tasks",
           {
             headers,
           }

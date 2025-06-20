@@ -22,7 +22,7 @@ const Layout = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          "https://task-manager-ht8a.onrender.com/api/projects",
+          "https://task-manager-g1g8.onrender.com/api/projects",
           {
             headers,
           }
@@ -63,18 +63,7 @@ const Layout = () => {
           >
             Dashboard
           </button>
-          <button
-            className={`nav-item ${activeView === "my-todo" ? "active" : ""}`}
-            onClick={() => navigate("/my-todo")}
-          >
-            My To-do
-          </button>
-          <button
-            className={`nav-item ${activeView === "requests" ? "active" : ""}`}
-            onClick={() => navigate("/requests")}
-          >
-            Requests from
-          </button>
+
           <div className="nav-section">
             <span className="section-title">Deadlines</span>
             {deadlines.map((deadline, index) => (
@@ -95,8 +84,7 @@ const Layout = () => {
       <div className="main-content">
         <header className="top-bar">
           <div className="project-info">
-            <span className="project-name">Beijing-Pottery</span>
-            <span className="project-details">In Progress</span>
+            <span className="project-name">Task Manager</span>
           </div>
           <div className="view-options">
             <button
@@ -114,20 +102,6 @@ const Layout = () => {
               onClick={() => navigate("/calendar")}
             >
               Calendar
-            </button>
-            <button
-              className={`view-button ${activeView === "list" ? "active" : ""}`}
-              onClick={() => navigate("/list")}
-            >
-              Project List
-            </button>
-            <button
-              className={`view-button ${
-                activeView === "timeline" ? "active" : ""
-              }`}
-              onClick={() => navigate("/timeline")}
-            >
-              Timeline
             </button>
           </div>
         </header>

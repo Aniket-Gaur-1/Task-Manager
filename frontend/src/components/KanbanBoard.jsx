@@ -21,7 +21,7 @@ const KanbanBoard = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
-          "https://task-manager-ht8a.onrender.com/api/tasks",
+          "https://task-manager-g1g8.onrender.com/api/tasks",
           {
             headers,
           }
@@ -45,13 +45,13 @@ const KanbanBoard = () => {
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
       await axios.put(
-        `https://task-manager-ht8a.onrender.com/api/tasks/${taskId}`,
+        `https://task-manager-g1g8.onrender.com/api/tasks/${taskId}`,
         { status: newStatus },
         { headers }
       );
       // Refresh tasks after update
       const res = await axios.get(
-        "https://task-manager-ht8a.onrender.com/api/tasks",
+        "https://task-manager-g1g8.onrender.com/api/tasks",
         {
           headers,
         }
