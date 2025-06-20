@@ -20,10 +20,13 @@ const Login = () => {
         formData,
         { withCredentials: true }
       );
-      setUser({ token: res.data.accessToken, role: res.data.role });
+      const { accessToken, role } = res.data;
+      setUser({ token: accessToken, role });
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("role", role); // Store role
       navigate("/dashboard");
     } catch (err) {
-      console.error("Login error:", err.message);
+      console.error("Login error:", err.response?.data?.message || err.message);
       setError(err.response?.data?.message || "Login failed");
     }
   };

@@ -23,29 +23,19 @@ const Dashboard = () => {
       try {
         if (!user) {
           const token = localStorage.getItem("token");
-          if (token) {
-            try {
-              const headers = { Authorization: `Bearer ${token}` };
-              const res = await axios.get(
-                "https://task-manager-20l8.onrender.com/api/auth/verify",
-                { headers }
-              );
-              // Rely on AuthContext to set user
-            } catch (err) {
-              console.log(
-                "Dashboard: Token verification failed, redirecting to login"
-              );
-              if (isMounted) navigate("/login");
-              return;
-            }
-          } else {
+          if (!token) {
             console.log("Dashboard: No token, redirecting to login");
             if (isMounted) navigate("/login");
             return;
           }
+          // Set user from localStorage without verify call
+          const role = localStorage.getItem("role") || "user";
+          if (isMounted) setUser({ token, role });
+          return; // Wait for next cycle
         }
 
         if (user && isMounted) {
+          console.log("Dashboard: User role:", user.role); // Debug user role
           const headers = { Authorization: `Bearer ${user.token}` };
           const [projectsRes, tasksRes, activitiesRes] = await Promise.all([
             axios.get("https://task-manager-20l8.onrender.com/api/projects", {
@@ -82,8 +72,14 @@ const Dashboard = () => {
           }
         }
       } catch (err) {
-        console.error("Dashboard: Fetch error:", err.message);
-        if (isMounted) setError("Failed to load dashboard data");
+        console.error(
+          "Dashboard: Fetch error:",
+          err.response?.data?.message || err.message
+        );
+        if (isMounted)
+          setError(
+            err.response?.data?.message || "Failed to load dashboard data"
+          );
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -105,6 +101,7 @@ const Dashboard = () => {
       );
       setUser(null);
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       navigate("/login");
     } catch (err) {
       console.error("Dashboard: Logout error:", err.message);
