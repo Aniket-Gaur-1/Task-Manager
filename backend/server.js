@@ -5,11 +5,13 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const socketIo = require('socket.io');
+const { Server } = require('socket.io');
 const http = require('http');
 require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
     cors: {
         origin: '*', // Allow all origins for Socket.IO
