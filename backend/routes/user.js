@@ -13,7 +13,7 @@ const adminOnly = async(req, res, next) => {
 };
 
 
-app.get('/', authenticate, adminOnly, async(req, res) => {
+router.get('/', authenticate, adminOnly, async(req, res) => {
     try {
         const users = await User.find().select('name email _id');
         res.json(users);
@@ -23,7 +23,7 @@ app.get('/', authenticate, adminOnly, async(req, res) => {
     }
 });
 
-app.get('/:id', authenticate, async(req, res) => {
+router.get('/:id', authenticate, async(req, res) => {
     try {
         if (req.user.id !== req.params.id) return res.status(403).json({ message: 'Unauthorized' });
         const user = await User.findById(req.params.id).select('email name role');
@@ -35,7 +35,7 @@ app.get('/:id', authenticate, async(req, res) => {
     }
 });
 
-app.put('/:id', authenticate, async(req, res) => {
+router.put('/:id', authenticate, async(req, res) => {
     const { name, password } = req.body;
     try {
         if (req.user.id !== req.params.id) return res.status(403).json({ message: 'Unauthorized' });

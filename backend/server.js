@@ -30,8 +30,8 @@ app.use(
     })
 );
 
-const tasksRoutes = require('./routes/tasks');
-const projectsRoutes = require('./routes/projects');
+const tasksRoutes = require('./routes/task');
+const projectsRoutes = require('./routes/project');
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
 const userRoutes = require('./routes/user');
