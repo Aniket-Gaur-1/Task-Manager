@@ -5,7 +5,7 @@ import axios from "axios";
 import ErrorModal from "./ErrorModal";
 
 const Dashboard = () => {
-  const { user, setUser } = useContext(AuthContext); // Added setUser
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -54,11 +54,11 @@ const Dashboard = () => {
             axios.get("https://task-manager-20l8.onrender.com/api/tasks", {
               headers,
             }),
-            axios.get("https://task-manager-20l8.onrender.comapi/activity", {
+            axios.get("https://task-manager-20l8.onrender.com/api/activity", {
               headers,
             }),
           ]);
-          console.log("Projects data:", projectsRes.data); // Debug project structure
+          console.log("Projects data:", projectsRes.data);
           const filteredProjects =
             user.role === "admin"
               ? projectsRes.data
@@ -69,13 +69,16 @@ const Dashboard = () => {
             user.role === "admin"
               ? tasksRes.data
               : tasksRes.data.filter(
-                  (task) => !task.assignedTo || task.assignedTo._id === user.id
+                  (task) =>
+                    task.assignedTo &&
+                    (task.assignedTo._id === user.id ||
+                      task.assignedTo === user.id)
                 );
           if (isMounted) {
             setProjects(filteredProjects);
             setTasks(filteredTasks);
             setActivities(activitiesRes.data.slice(0, 5));
-            console.log("Filtered projects:", filteredProjects);
+            console.log("Filtered tasks:", filteredTasks);
           }
         }
       } catch (err) {
@@ -91,7 +94,7 @@ const Dashboard = () => {
     return () => {
       isMounted = false;
     };
-  }, [user, navigate]); // Only re-run on user or navigate change
+  }, [user, navigate]);
 
   const handleLogout = async () => {
     try {
@@ -100,7 +103,7 @@ const Dashboard = () => {
         {},
         { withCredentials: true }
       );
-      setUser(null); // Now defined
+      setUser(null);
       localStorage.removeItem("token");
       navigate("/login");
     } catch (err) {

@@ -23,9 +23,7 @@ const AddTask = () => {
         const headers = { Authorization: `Bearer ${user.token}` };
         const res = await axios.get(
           "https://task-manager-20l8.onrender.com/api/users",
-          {
-            headers,
-          }
+          { headers }
         );
         setUsers(res.data);
       } catch (err) {
