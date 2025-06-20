@@ -10,11 +10,17 @@ require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, { cors: { origin: 'http://localhost:5173', credentials: true } });
-
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*', // Allow all origins for Socket.IO
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true, // Allow credentials if needed
+    },
+});
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors());
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
