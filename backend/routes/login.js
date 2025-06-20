@@ -15,12 +15,33 @@ const adminOnly = async(req, res, next) => {
 };
 
 // ✅ Admin-only: Get all users
-router.get('/', async(req, res) => {
+router.post('/', async(req, res) => {
+    const { email, password } = req.body;
+
+    // Validation
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     try {
-        const users = await User.find().select('name email _id');
-        res.json(users);
+        const user = await User.findOne({ email });
+        if (!user)
+            return res.status(401).json({ message: 'Invalid email or password' });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch)
+            return res.status(401).json({ message: 'Invalid email or password' });
+
+        const accessToken = jwt.sign({ id: user._id, role: user.role },
+            process.env.JWT_SECRET, { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            accessToken,
+            role: user.role,
+        });
     } catch (err) {
-        console.error('Users fetch error:', err.message);
+        console.error('Login error:', err.message);
         res.status(500).json({ message: 'Server error' });
     }
 });
