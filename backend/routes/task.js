@@ -6,17 +6,15 @@ const Activity = require('../models/Activity');
 const Project = require('../models/Project');
 const User = require('../models/User');
 
-// Admin-only middleware
-const adminOnly = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
-        next();
-    } else {
-        res.status(403).json({ message: 'Admin access required' });
-    }
-};
-
-// Export a function that takes io as an argument
 module.exports = (io) => {
+    const adminOnly = (req, res, next) => {
+        if (req.user && req.user.role === 'admin') {
+            next();
+        } else {
+            res.status(403).json({ message: 'Admin access required' });
+        }
+    };
+
     router.get('/', authenticate, async(req, res) => {
         try {
             const query = {
@@ -92,7 +90,7 @@ module.exports = (io) => {
             const populatedTask = await Task.findById(task._id)
                 .populate('projectId', 'name')
                 .populate('assignedTo', 'name');
-            if (io) io.emit('taskCreated', populatedTask); // Safely emit if io is defined
+            if (io) io.emit('taskCreated', populatedTask);
             res.status(201).json(populatedTask);
         } catch (err) {
             console.error('Task creation error:', err.message, err.stack);
