@@ -28,9 +28,16 @@ const Dashboard = () => {
             if (isMounted) navigate("/login");
             return;
           }
-          const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-          const role = localStorage.getItem("role") || "user";
-          if (isMounted) setUser({ token, id: decoded.id, role }); // Set user.id
+          try {
+            const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+            const role = localStorage.getItem("role") || "user";
+            if (isMounted)
+              setUser({ token, id: decoded.id || decoded.sub, role }); // Fallback to 'sub' if 'id' not present
+          } catch (decodeErr) {
+            console.error("Dashboard: Token decode error:", decodeErr.message);
+            if (isMounted) navigate("/login");
+            return;
+          }
           return; // Wait for next cycle
         }
 
@@ -49,7 +56,7 @@ const Dashboard = () => {
         ]);
         console.log("Projects data:", projectsRes.data);
         const filteredProjects =
-          user.role === "admin"
+          user.role === "admin" || !user.id
             ? projectsRes.data
             : projectsRes.data.filter(
                 (project) =>
@@ -57,7 +64,7 @@ const Dashboard = () => {
                   project.createdBy === user.id
               );
         const filteredTasks =
-          user.role === "admin"
+          user.role === "admin" || !user.id
             ? tasksRes.data
             : tasksRes.data.filter(
                 (task) =>

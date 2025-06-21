@@ -18,7 +18,7 @@ router.get('/', authenticate, async(req, res) => {
         const projects = await Project.find({
             $or: [
                 { createdBy: req.user.id },
-                { members: req.user.id }
+                { members: { $in: [req.user.id] } }
             ]
         }).populate('createdBy', 'name').populate('members', 'name');
         console.log('Fetched projects:', projects); // Debug

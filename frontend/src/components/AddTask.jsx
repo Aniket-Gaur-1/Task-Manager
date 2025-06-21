@@ -26,11 +26,13 @@ const AddTask = () => {
         const [usersRes, projectsRes] = await Promise.all([
           axios.get("https://task-manager-20l8.onrender.com/api/user/users", {
             headers,
-          }), // Corrected URL
+          }),
           axios.get("https://task-manager-20l8.onrender.com/api/projects", {
             headers,
           }),
         ]);
+        console.log("Fetched users:", usersRes.data);
+        console.log("Fetched projects:", projectsRes.data);
         setUsers(usersRes.data);
         setProjects(projectsRes.data);
       } catch (err) {
