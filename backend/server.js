@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://task-manager-mauve-one.vercel.app', // Allow all origins for Socket.IO
+        origin: 'https://task-manager-pi-beige-92.vercel.app', // Allow all origins for Socket.IO
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true, // Allow credentials if needed
     },
@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: "https://task-manager-mauve-one.vercel.app", // ✅ your frontend domain
+        origin: "https://task-manager-pi-beige-92.vercel.app", // ✅ your frontend domain
         credentials: true, // ✅ allow cookies and auth headers
     })
 );
