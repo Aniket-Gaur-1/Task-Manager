@@ -28,53 +28,54 @@ const Dashboard = () => {
             if (isMounted) navigate("/login");
             return;
           }
-          // Set user from localStorage without verify call
+          const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
           const role = localStorage.getItem("role") || "user";
-          if (isMounted) setUser({ token, role });
+          if (isMounted) setUser({ token, id: decoded.id, role }); // Set user.id
           return; // Wait for next cycle
         }
 
-        if (user && isMounted) {
-          console.log("Dashboard: User role:", user.role); // Debug user role
-          const headers = { Authorization: `Bearer ${user.token}` };
-          const [projectsRes, tasksRes, activitiesRes] = await Promise.all([
-            axios.get("https://task-manager-20l8.onrender.com/api/projects", {
-              headers,
-            }),
-            axios.get("https://task-manager-20l8.onrender.com/api/tasks", {
-              headers,
-            }),
-            axios.get("https://task-manager-20l8.onrender.com/api/activity", {
-              headers,
-            }),
-          ]);
-          console.log("Projects data:", projectsRes.data);
-          const filteredProjects =
-            user.role === "admin"
-              ? projectsRes.data
-              : projectsRes.data.filter((project) =>
-                  project.members?.includes(user.id)
-                );
-          const filteredTasks =
-            user.role === "admin"
-              ? tasksRes.data
-              : tasksRes.data.filter(
-                  (task) =>
-                    task.assignedTo &&
-                    (task.assignedTo._id === user.id ||
-                      task.assignedTo === user.id)
-                );
-          if (isMounted) {
-            setProjects(filteredProjects);
-            setTasks(filteredTasks);
-            setActivities(activitiesRes.data.slice(0, 5));
-            console.log("Filtered tasks:", filteredTasks);
-          }
+        console.log("Dashboard: User role:", user.role, "User ID:", user.id);
+        const headers = { Authorization: `Bearer ${user.token}` };
+        const [projectsRes, tasksRes, activitiesRes] = await Promise.all([
+          axios.get("https://task-manager-20l8.onrender.com/api/projects", {
+            headers,
+          }),
+          axios.get("https://task-manager-20l8.onrender.com/api/tasks", {
+            headers,
+          }),
+          axios.get("https://task-manager-20l8.onrender.com/api/activity", {
+            headers,
+          }),
+        ]);
+        console.log("Projects data:", projectsRes.data);
+        const filteredProjects =
+          user.role === "admin"
+            ? projectsRes.data
+            : projectsRes.data.filter(
+                (project) =>
+                  project.members?.includes(user.id) ||
+                  project.createdBy === user.id
+              );
+        const filteredTasks =
+          user.role === "admin"
+            ? tasksRes.data
+            : tasksRes.data.filter(
+                (task) =>
+                  task.assignedTo &&
+                  (task.assignedTo._id === user.id ||
+                    task.assignedTo === user.id)
+              );
+        if (isMounted) {
+          setProjects(filteredProjects);
+          setTasks(filteredTasks);
+          setActivities(activitiesRes.data.slice(0, 5));
+          console.log("Filtered tasks:", filteredTasks);
         }
       } catch (err) {
         console.error(
           "Dashboard: Fetch error:",
-          err.response?.data?.message || err.message
+          err.response?.data?.message || err.message,
+          err.stack
         );
         if (isMounted)
           setError(
