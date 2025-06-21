@@ -21,6 +21,7 @@ const Login = () => {
         { withCredentials: true }
       );
       const { accessToken, role } = res.data;
+      console.log("Login response:", res.data); // Debug the response
       setUser({ token: accessToken, role });
       localStorage.setItem("token", accessToken);
       localStorage.setItem("role", role); // Store role

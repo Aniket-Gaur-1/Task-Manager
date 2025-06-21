@@ -12,23 +12,20 @@ require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 
-
 const io = new Server(server, {
     cors: {
-        origin: 'https://task-manager-pi-beige-92.vercel.app', // Allow all origins for Socket.IO
+        origin: 'https://task-manager-pi-beige-92.vercel.app',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        credentials: true, // Allow credentials if needed
+        credentials: true,
     },
 });
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-    cors({
-        origin: "https://task-manager-pi-beige-92.vercel.app", // ✅ your frontend domain
-        credentials: true, // ✅ allow cookies and auth headers
-    })
-);
+app.use(cors({
+    origin: "https://task-manager-pi-beige-92.vercel.app",
+    credentials: true,
+}));
 
 const tasksRoutes = require('./routes/task');
 const projectsRoutes = require('./routes/project');
@@ -54,5 +51,5 @@ io.on('connection', (socket) => {
 });
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => server.listen(5000, () => console.log('Server running on port 5000')))
+    .then(() => server.listen(process.env.PORT || 5000, () => console.log(`Server running on port ${process.env.PORT || 5000}`)))
     .catch((err) => console.error('MongoDB error:', err.message));
