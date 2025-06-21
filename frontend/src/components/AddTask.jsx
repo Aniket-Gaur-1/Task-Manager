@@ -24,9 +24,9 @@ const AddTask = () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
         const [usersRes, projectsRes] = await Promise.all([
-          axios.get("https://task-manager-20l8.onrender.com/api/users/users", {
+          axios.get("https://task-manager-20l8.onrender.com/api/user/users", {
             headers,
-          }),
+          }), // Corrected URL
           axios.get("https://task-manager-20l8.onrender.com/api/projects", {
             headers,
           }),
