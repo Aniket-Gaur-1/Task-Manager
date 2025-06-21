@@ -4,7 +4,7 @@ const authenticate = require('../middleware/authenticate');
 const Task = require('../models/Task');
 const Activity = require('../models/Activity');
 const Project = require('../models/Project');
-const User = require('../models/User'); // Added for assignedTo validation
+const User = require('../models/User');
 const { io } = require('../server');
 
 // Admin-only middleware
@@ -57,7 +57,6 @@ router.get('/:id', authenticate, async(req, res) => {
 router.post('/', authenticate, adminOnly, async(req, res) => {
     const { title, description, projectId, status, dueDate, assignedTo } = req.body;
     try {
-        // Validate required fields
         if (!title) {
             return res.status(400).json({ message: 'Title is required' });
         }
@@ -72,7 +71,6 @@ router.post('/', authenticate, adminOnly, async(req, res) => {
             assignedTo: assignedTo || null,
         };
 
-        // Validate projectId if provided
         if (projectId) {
             const project = await Project.findById(projectId);
             if (!project) {
@@ -80,7 +78,6 @@ router.post('/', authenticate, adminOnly, async(req, res) => {
             }
         }
 
-        // Validate assignedTo if provided
         if (assignedTo) {
             const user = await User.findById(assignedTo);
             if (!user) {
@@ -97,7 +94,7 @@ router.post('/', authenticate, adminOnly, async(req, res) => {
         io.emit('taskCreated', populatedTask);
         res.status(201).json(populatedTask);
     } catch (err) {
-        console.error('Task creation error:', err.message);
+        console.error('Task creation error:', err.message, err.stack);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 });

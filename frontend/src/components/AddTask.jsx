@@ -12,10 +12,10 @@ const AddTask = () => {
     status: "To Do",
     dueDate: "",
     assignedTo: "",
-    projectId: "", // Add projectId field
+    projectId: "",
   });
   const [users, setUsers] = useState([]);
-  const [projects, setProjects] = useState([]); // Add projects state
+  const [projects, setProjects] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -23,20 +23,21 @@ const AddTask = () => {
     const fetchUsersAndProjects = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        // Fetch users (admin-only)
-        const usersRes = await axios.get(
-          "https://task-manager-20l8.onrender.com/api/users",
-          { headers }
-        );
+        const [usersRes, projectsRes] = await Promise.all([
+          axios.get("https://task-manager-20l8.onrender.com/api/users/users", {
+            headers,
+          }),
+          axios.get("https://task-manager-20l8.onrender.com/api/projects", {
+            headers,
+          }),
+        ]);
         setUsers(usersRes.data);
-        // Fetch projects
-        const projectsRes = await axios.get(
-          "https://task-manager-20l8.onrender.com/api/projects",
-          { headers }
-        );
         setProjects(projectsRes.data);
       } catch (err) {
-        console.error("AddTask: Fetch users/projects error:", err.message);
+        console.error(
+          "AddTask: Fetch users/projects error:",
+          err.response?.data || err.message
+        );
         setError("Failed to load users or projects");
       }
     };
@@ -60,18 +61,22 @@ const AddTask = () => {
           ? new Date(formData.dueDate).toISOString()
           : null,
         assignedTo: formData.assignedTo || null,
-        projectId: formData.projectId || null, // Include projectId
+        projectId: formData.projectId || null,
       };
-      await axios.post(
+      const response = await axios.post(
         "https://task-manager-20l8.onrender.com/api/tasks",
         payload,
         { headers }
       );
+      console.log("Task creation response:", response.data);
       setSuccess("Task created successfully");
       setTimeout(() => navigate("/kanban"), 1000);
     } catch (err) {
-      console.error("AddTask: Create task error:", err.message);
-      setError("Failed to create task");
+      console.error(
+        "AddTask: Create task error:",
+        err.response?.data || err.message
+      );
+      setError(err.response?.data?.message || "Failed to create task");
     }
   };
 
@@ -128,7 +133,7 @@ const AddTask = () => {
             <option value="">Unassigned</option>
             {users.map((u) => (
               <option key={u._id} value={u._id}>
-                {u.name || u.email} {/* Fallback to email if name is missing */}
+                {u.name || u.email}
               </option>
             ))}
           </select>

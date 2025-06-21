@@ -14,7 +14,6 @@ const adminOnly = (req, res, next) => {
 
 router.get('/', authenticate, async(req, res) => {
     try {
-        // Allow users to see their own projects or all if admin
         const projects = await Project.find({
             $or: [
                 { createdBy: req.user.id },
@@ -24,19 +23,22 @@ router.get('/', authenticate, async(req, res) => {
         res.json(projects);
     } catch (err) {
         console.error('Projects fetch error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
 router.post('/', authenticate, adminOnly, async(req, res) => {
     const { name, description } = req.body;
     try {
+        if (!name) {
+            return res.status(400).json({ message: 'Name is required' });
+        }
         const project = new Project({ name, description, createdBy: req.user.id, members: [] });
         await project.save();
         res.status(201).json(project);
     } catch (err) {
-        console.error('Project creation error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        console.error('Project creation error:', err.message, err.stack);
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
