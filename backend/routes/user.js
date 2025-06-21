@@ -15,13 +15,13 @@ const adminOnly = async(req, res, next) => {
 };
 
 // GET all users - Admin only
-router.get('/', authenticate, adminOnly, async(req, res) => {
+router.get('/users', authenticate, adminOnly, async(req, res) => { // Changed from '/' to '/users'
     try {
         const users = await User.find().select('name email _id');
         res.json(users);
     } catch (err) {
         console.error('Users fetch error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
@@ -38,7 +38,7 @@ router.get('/:id', authenticate, async(req, res) => {
         res.json(user);
     } catch (err) {
         console.error('User fetch error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
@@ -67,7 +67,7 @@ router.put('/:id', authenticate, async(req, res) => {
         res.json(user);
     } catch (err) {
         console.error('User update error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
@@ -79,7 +79,7 @@ router.post('/make-admin/:id', authenticate, adminOnly, async(req, res) => {
         res.json({ message: 'User role updated to admin', user });
     } catch (err) {
         console.error('Admin update error:', err.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 

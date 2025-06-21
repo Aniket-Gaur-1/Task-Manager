@@ -12,26 +12,35 @@ const AddTask = () => {
     status: "To Do",
     dueDate: "",
     assignedTo: "",
+    projectId: "", // Add projectId field
   });
   const [users, setUsers] = useState([]);
+  const [projects, setProjects] = useState([]); // Add projects state
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndProjects = async () => {
       try {
         const headers = { Authorization: `Bearer ${user.token}` };
-        const res = await axios.get(
+        // Fetch users (admin-only)
+        const usersRes = await axios.get(
           "https://task-manager-20l8.onrender.com/api/users",
           { headers }
         );
-        setUsers(res.data);
+        setUsers(usersRes.data);
+        // Fetch projects
+        const projectsRes = await axios.get(
+          "https://task-manager-20l8.onrender.com/api/projects",
+          { headers }
+        );
+        setProjects(projectsRes.data);
       } catch (err) {
-        console.error("AddTask: Fetch users error:", err.message);
-        setError("Failed to load users");
+        console.error("AddTask: Fetch users/projects error:", err.message);
+        setError("Failed to load users or projects");
       }
     };
-    if (user) fetchUsers();
+    if (user) fetchUsersAndProjects();
   }, [user]);
 
   const handleChange = (e) => {
@@ -44,8 +53,14 @@ const AddTask = () => {
     try {
       const headers = { Authorization: `Bearer ${user.token}` };
       const payload = {
-        ...formData,
+        title: formData.title,
+        description: formData.description || "",
+        status: formData.status,
+        dueDate: formData.dueDate
+          ? new Date(formData.dueDate).toISOString()
+          : null,
         assignedTo: formData.assignedTo || null,
+        projectId: formData.projectId || null, // Include projectId
       };
       await axios.post(
         "https://task-manager-20l8.onrender.com/api/tasks",
@@ -113,7 +128,20 @@ const AddTask = () => {
             <option value="">Unassigned</option>
             {users.map((u) => (
               <option key={u._id} value={u._id}>
-                {u.name}
+                {u.name || u.email} {/* Fallback to email if name is missing */}
+              </option>
+            ))}
+          </select>
+          <select
+            name="projectId"
+            value={formData.projectId}
+            onChange={handleChange}
+            className="input-field"
+          >
+            <option value="">No Project</option>
+            {projects.map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.name}
               </option>
             ))}
           </select>
