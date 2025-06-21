@@ -7,7 +7,7 @@ const authenticate = require('../middleware/authenticate');
 const { io } = require('../server');
 
 // ✅ Register new user (admin or user)
-router.post('/register', async(req, res) => {
+router.post('/', async(req, res) => {
     const { name, email, password, role } = req.body;
 
     if (!email || !password || !name) {
