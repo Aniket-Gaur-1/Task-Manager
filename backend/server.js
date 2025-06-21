@@ -14,7 +14,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://task-manager-iota-beryl-29.vercel.app',
+        origin: 'https://task-manager-mu-pink.vercel.app',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true,
     },
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: "https://task-manager-iota-beryl-29.vercel.app",
+    origin: "https://task-manager-mu-pink.vercel.app",
     credentials: true,
 }));
 
