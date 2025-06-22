@@ -31,8 +31,9 @@ const Dashboard = () => {
           try {
             const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
             const role = localStorage.getItem("role") || "user";
-            if (isMounted)
-              setUser({ token, id: decoded.id || decoded.sub, role }); // Fallback to 'sub' if 'id' not present
+            const userId = decoded.id || decoded.sub || decoded._id; // Try multiple keys
+            console.log("Decoded token payload:", decoded); // Debug
+            if (isMounted) setUser({ token, id: userId, role });
           } catch (decodeErr) {
             console.error("Dashboard: Token decode error:", decodeErr.message);
             if (isMounted) navigate("/login");
@@ -102,18 +103,25 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         "https://task-manager-20l8.onrender.com/api/logout",
         {},
         { withCredentials: true }
       );
+      console.log("Logout response:", response.data); // Debug
       setUser(null);
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       navigate("/login");
     } catch (err) {
-      console.error("Dashboard: Logout error:", err.message);
-      setError("Failed to logout");
+      console.error(
+        "Dashboard: Logout error:",
+        err.response?.data || err.message,
+        err.stack
+      );
+      setError(
+        "Failed to logout: " + (err.response?.data?.message || err.message)
+      );
     }
   };
 
