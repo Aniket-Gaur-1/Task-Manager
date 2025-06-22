@@ -31,19 +31,25 @@ const AddTask = () => {
             headers,
           }),
         ]);
+
+        console.log("User ID:", user.id); // ✅ Check this
         console.log("Fetched users:", usersRes.data);
         console.log("Fetched projects:", projectsRes.data);
+
         setUsers(usersRes.data);
         setProjects(projectsRes.data);
       } catch (err) {
         console.error(
-          "AddTask: Fetch users/projects error:",
+          "AddTask: Fetch error:",
           err.response?.data || err.message
         );
         setError("Failed to load users or projects");
       }
     };
-    if (user) fetchUsersAndProjects();
+
+    if (user?.token) {
+      fetchUsersAndProjects();
+    }
   }, [user]);
 
   const handleChange = (e) => {
