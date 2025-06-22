@@ -58,18 +58,34 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    const token = user?.token;
+
     try {
-      await fetch("https://task-manager-20l8.onrender.com/api/logout", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${user?.token}` },
-        credentials: "include",
-      });
+      if (token) {
+        const res = await fetch(
+          "https://task-manager-20l8.onrender.com/api/logout",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.warn("Logout failed:", errorData.message || res.statusText);
+        }
+      } else {
+        console.warn("No token available for logout.");
+      }
     } catch (err) {
-      console.error("AuthContext: Logout error:", err);
+      console.error("AuthContext: Logout error:", err.message || err);
+    } finally {
+      setUser(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
     }
-    setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
   };
 
   if (loading) {
