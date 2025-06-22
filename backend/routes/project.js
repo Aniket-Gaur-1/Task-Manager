@@ -21,8 +21,12 @@ router.get('/', authenticate, async(req, res) => {
                 { members: { $in: [req.user.id] } }
             ]
         }).populate('createdBy', 'name').populate('members', 'name');
-        console.log('Fetched projects:', projects); // Debug
-        res.json(projects);
+        // Fallback for admin with undefined id
+        const allProjects = req.user.role === 'admin' && !req.user.id ?
+            await Project.find().populate('createdBy', 'name').populate('members', 'name') :
+            projects;
+        console.log('Fetched projects:', allProjects); // Debug
+        res.json(allProjects);
     } catch (err) {
         console.error('Projects fetch error:', err.message, err.stack);
         res.status(500).json({ message: 'Server error', error: err.message });

@@ -5,7 +5,7 @@ import axios from "axios";
 import ErrorModal from "./ErrorModal";
 
 const Dashboard = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -22,24 +22,9 @@ const Dashboard = () => {
       setLoading(true);
       try {
         if (!user) {
-          const token = localStorage.getItem("token");
-          if (!token) {
-            console.log("Dashboard: No token, redirecting to login");
-            if (isMounted) navigate("/login");
-            return;
-          }
-          try {
-            const decoded = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-            const role = localStorage.getItem("role") || "user";
-            const userId = decoded.id || decoded.sub || decoded._id; // Try multiple keys
-            console.log("Decoded token payload:", decoded); // Debug
-            if (isMounted) setUser({ token, id: userId, role });
-          } catch (decodeErr) {
-            console.error("Dashboard: Token decode error:", decodeErr.message);
-            if (isMounted) navigate("/login");
-            return;
-          }
-          return; // Wait for next cycle
+          console.log("Dashboard: No user, redirecting to login");
+          if (isMounted) navigate("/login");
+          return;
         }
 
         console.log("Dashboard: User role:", user.role, "User ID:", user.id);
@@ -102,27 +87,8 @@ const Dashboard = () => {
   }, [user, navigate]);
 
   const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        "https://task-manager-20l8.onrender.com/api/logout",
-        {},
-        { withCredentials: true }
-      );
-      console.log("Logout response:", response.data); // Debug
-      setUser(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      navigate("/login");
-    } catch (err) {
-      console.error(
-        "Dashboard: Logout error:",
-        err.response?.data || err.message,
-        err.stack
-      );
-      setError(
-        "Failed to logout: " + (err.response?.data?.message || err.message)
-      );
-    }
+    await logout(); // Use AuthContext's logout
+    navigate("/login");
   };
 
   if (loading) {

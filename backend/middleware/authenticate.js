@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 module.exports = async(req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    // Check for Bearer token in Authorization header
     const token = authHeader && authHeader.startsWith('Bearer ') ?
         authHeader.split(' ')[1] :
         null;
@@ -14,7 +13,8 @@ module.exports = async(req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // token payload (e.g., { id, role, ... })
+        req.user = { id: decoded.id, role: decoded.role }; // Explicitly set id and role
+        console.log('Authenticated user:', req.user); // Debug
         next();
     } catch (err) {
         console.error('Auth error:', err.message);

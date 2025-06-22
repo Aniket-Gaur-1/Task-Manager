@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import jwt from "jsonwebtoken";
 
 export const AuthContext = createContext();
 
@@ -7,25 +8,20 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const restoreAuth = async () => {
+    const restoreAuth = () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await fetch(
-            "https://task-manager-20l8.onrender.com/api/auth/verify",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          } else {
-            localStorage.removeItem("token");
-          }
+          const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET || "default-secret"
+          ); // Fallback for local testing
+          const role = localStorage.getItem("role") || "user";
+          setUser({ id: decoded.id, role, token });
         } catch (err) {
           console.error("AuthContext: Token verification failed:", err);
           localStorage.removeItem("token");
+          localStorage.removeItem("role");
         }
       }
       setLoading(false);
@@ -45,8 +41,13 @@ export const AuthProvider = ({ children }) => {
       );
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("token", data.token);
-        setUser(data.user);
+        localStorage.setItem("token", data.accessToken); // Use accessToken from response
+        localStorage.setItem("role", data.role);
+        setUser({
+          id: jwt.decode(data.accessToken).id,
+          role: data.role,
+          token: data.accessToken,
+        });
         return true;
       }
       return false;
@@ -56,13 +57,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch("https://task-manager-20l8.onrender.com/api/logout", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${user?.token}` },
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("AuthContext: Logout error:", err);
+    }
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Or a loading component
+    return <div>Loading...</div>;
   }
 
   return (

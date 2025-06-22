@@ -26,9 +26,10 @@ module.exports = (io) => {
             if (req.query.projectId) {
                 query.projectId = req.query.projectId;
             }
-            const tasks = await Task.find(query)
-                .populate('projectId', 'name')
-                .populate('assignedTo', 'name');
+            // Fallback for admin with undefined id
+            const tasks = req.user.role === 'admin' && !req.user.id ?
+                await Task.find().populate('projectId', 'name').populate('assignedTo', 'name') :
+                await Task.find(query).populate('projectId', 'name').populate('assignedTo', 'name');
             res.json(tasks);
         } catch (err) {
             console.error('Tasks fetch error:', err.message);
