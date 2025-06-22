@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode"; // ✅ Replaces 'jsonwebtoken'
 
 export const AuthContext = createContext();
 
@@ -12,14 +12,11 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET || "default-secret"
-          ); // Fallback for local testing
+          const decoded = jwt_decode(token);
           const role = localStorage.getItem("role") || "user";
           setUser({ id: decoded.id, role, token });
         } catch (err) {
-          console.error("AuthContext: Token verification failed:", err);
+          console.error("AuthContext: Token decoding failed:", err);
           localStorage.removeItem("token");
           localStorage.removeItem("role");
         }
@@ -41,10 +38,11 @@ export const AuthProvider = ({ children }) => {
       );
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("token", data.accessToken); // Use accessToken from response
+        localStorage.setItem("token", data.accessToken);
         localStorage.setItem("role", data.role);
+        const decoded = jwt_decode(data.accessToken);
         setUser({
-          id: jwt.decode(data.accessToken).id,
+          id: decoded.id,
           role: data.role,
           token: data.accessToken,
         });
